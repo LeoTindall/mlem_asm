@@ -1,0 +1,10 @@
+[package]
+authors = ["SilverWingedSeraph <lfstindall@gmail.com>"]
+name = "mlem-asm"
+version = "0.1.0"
+
+[dependencies]
+mlem = {git = "https://github.com/SilverWingedSeraph/mlem"}
+serde = "*"
+serde_cbor = "*"
+serde_derive = "*"
