@@ -213,6 +213,8 @@ pub fn parse_line(line: &str) -> Result<Option<Instruction>, String> {
     Err("Malformed. Perhaps there are too many terms?".into())
 }
 
+/// Simply parse a program, each line resulting in either a valid or invalid line (Ok or Err).
+/// This function can't fail; however, there's no guarantee that even one valid instruction is produced.
 fn initial_parse_program(program: &str) -> Vec<Result<Option<Instruction>, String>> {
     let lines = program.lines();
     let mut v = Vec::new();
