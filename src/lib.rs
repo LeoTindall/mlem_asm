@@ -281,3 +281,13 @@ pub fn parse_program(program: &str) -> Result<Program, Vec<(u64, String)>> {
         Err(errors)
     }
 }
+
+use std::io::Write;
+/// Writes an assembled program to a writer in packed, self-describing CBOR (a format MLeM can natively consume.)
+/// 
+/// Writing to, i.e., a file allows you to save assembled "binaries" that MLeM can execute; you can also pass 
+/// data over the network for distributed processing.
+pub fn program_to_writer(p: &Program, mut w: &mut Write) -> Result<(), serde_cbor::Error> {
+    use serde_cbor::ser::to_writer_packed_sd;
+    to_writer_packed_sd(&mut w, &p)
+}
