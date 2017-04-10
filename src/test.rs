@@ -24,14 +24,15 @@ fn test_double_argument() {
 #[test]
 fn test_parse_invalid_program() {
     let invalid_program = "
+    ; comment only
     noop;
     move R:R0 R:R1;
     move R:Rx R:R1;
     move R:R0 L:1024p;
     ";
     let expected_errors = Err(vec![
-            (3, "Unknown register name: rx".into()),
-            (4, "Could not parse literal: invalid digit found in string".into())
+            (4, "Unknown register name: rx".into()),
+            (5, "Could not parse literal: invalid digit found in string".into())
     ]);
     let errors = parse_program(invalid_program);
     assert!(errors == expected_errors, "Program resulted in: {:?} not: {:?}", errors, expected_errors);
