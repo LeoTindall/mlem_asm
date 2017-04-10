@@ -34,6 +34,9 @@ enum InstructionName {
     Sub,
     Halt,
     Illegal,
+    Jump,
+    JumpIfZero,
+    JumpNotZero,
     None,
 }
 
@@ -49,6 +52,9 @@ fn parse_instruction(name: &str) -> Result<InstructionName, String> {
         "input" | "iput" => Ok(InstructionName::Input),
         "add" | "uadd" => Ok(InstructionName::Add),
         "subtract" | "usub" | "sub" => Ok(InstructionName::Sub),
+        "jump" => Ok(InstructionName::Jump),
+        "jumpifzero" | "jumpzero" | "jz" => Ok(InstructionName::JumpIfZero),
+        "jumpnotzer" | "jumpnotzero" | "jnz" => Ok(InstructionName::JumpNotZero),
         other => Err(format!("Unknown instruction: {}", other))
     }
 }
@@ -193,6 +199,7 @@ pub fn parse_line(line: &str) -> Result<Option<Instruction>, String> {
             InstructionName::Zero => Ok(Some(Instruction::Zero(arg1))),
             InstructionName::Input => Ok(Some(Instruction::Input(arg1))),
             InstructionName::Output => Ok(Some(Instruction::Output(arg1))),
+            InstructionName::Jump => Ok(Some(Instruction::Jump(arg1))),
             _ => Err("Wrong number of arguments. Got 1.".into())
         };
     }
@@ -206,6 +213,8 @@ pub fn parse_line(line: &str) -> Result<Option<Instruction>, String> {
             InstructionName::Move => Ok(Some(Instruction::Move(arg1, arg2))),
             InstructionName::Add => Ok(Some(Instruction::Add(arg1, arg2))),
             InstructionName::Sub => Ok(Some(Instruction::Sub(arg1, arg2))),
+            InstructionName::JumpIfZero => Ok(Some(Instruction::JumpIfZero(arg1, arg2))),
+            InstructionName::JumpNotZero => Ok(Some(Instruction::JumpNotZero(arg1, arg2))),
             _ => Err("Wrong number of arguments. Got 2.".into())
         }
     }
