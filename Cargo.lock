@@ -16,7 +16,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "mlem"
 version = "0.1.0"
-source = "git+https://github.com/SilverWingedSeraph/mlem#c1ef6ace25722018b6510d660bc19e379922029a"
+source = "git+https://github.com/SilverWingedSeraph/mlem#f2377051724532205e29e1c327d53e5b1008b1d1"
 dependencies = [
  "byteorder 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 0.9.13 (registry+https://github.com/rust-lang/crates.io-index)",

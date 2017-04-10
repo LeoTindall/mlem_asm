@@ -6,7 +6,8 @@ use std::fs::File;
 
 fn usage() {
     println!("Usage: ");
-    println!("\tmlem-asm source [output]\t\t Assemble the given source file to the given output file, or stdout.");
+    println!("\tmlem-asm a source [output]\t\t Assemble the given source file to the given output file, or stdout.");
+    println!("\tmlem-asm r source \t\t Assemble the given source file and execute it, hooking up stdin and stdout.");
 }
 
 enum Output {

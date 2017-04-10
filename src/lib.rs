@@ -37,6 +37,8 @@ enum InstructionName {
     Jump,
     JumpIfZero,
     JumpNotZero,
+    Push,
+    Pop,
     None,
 }
 
@@ -55,6 +57,8 @@ fn parse_instruction(name: &str) -> Result<InstructionName, String> {
         "jump" => Ok(InstructionName::Jump),
         "jumpifzero" | "jumpzero" | "jz" => Ok(InstructionName::JumpIfZero),
         "jumpnotzer" | "jumpnotzero" | "jnz" => Ok(InstructionName::JumpNotZero),
+        "push" => Ok(InstructionName::Push),
+        "pop" => Ok(InstructionName::Pop),
         other => Err(format!("Unknown instruction: {}", other))
     }
 }
@@ -200,6 +204,8 @@ pub fn parse_line(line: &str) -> Result<Option<Instruction>, String> {
             InstructionName::Input => Ok(Some(Instruction::Input(arg1))),
             InstructionName::Output => Ok(Some(Instruction::Output(arg1))),
             InstructionName::Jump => Ok(Some(Instruction::Jump(arg1))),
+            InstructionName::Push => Ok(Some(Instruction::Push(arg1))),
+            InstructionName::Pop => Ok(Some(Instruction::Pop(arg1))),
             _ => Err("Wrong number of arguments. Got 1.".into())
         };
     }
