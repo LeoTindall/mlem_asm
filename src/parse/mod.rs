@@ -1,4 +1,4 @@
-use mlem::{Address, Instruction, Register, Program};
+use mlem::{Instruction, Program};
 use super::lex;
 mod address;
 use self::address::parse_address;

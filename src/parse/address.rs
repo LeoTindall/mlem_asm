@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use mlem::{Register, Address};
 
 pub fn parse_register_name(item: &str) -> Result<Register, String> { 
