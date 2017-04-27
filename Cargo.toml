@@ -3,6 +3,15 @@ authors = ["SilverWingedSeraph <lfstindall@gmail.com>"]
 name = "mlem-asm"
 version = "0.1.0"
 
+description = "An assembler for the MLeM virtual machine."
+keywords = ["machine", "virtual-machine", "language", "assembly"]
+
+repository = "https://github.com/SilverWingedSeraph/mlem-asm"
+documentation = "https://docs.rs/mlem-asm"
+readme = "README.md"
+categories = ["emulators", "development-tools"]
+license = "MIT"
+
 [dependencies]
-mlem = {git = "https://github.com/SilverWingedSeraph/mlem"}
+mlem = "^0.1"
 serde_cbor = "^0.5"

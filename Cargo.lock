@@ -2,7 +2,7 @@
 name = "mlem-asm"
 version = "0.1.0"
 dependencies = [
- "mlem 0.1.0 (git+https://github.com/SilverWingedSeraph/mlem)",
+ "mlem 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_cbor 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -14,7 +14,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "mlem"
 version = "0.1.0"
-source = "git+https://github.com/SilverWingedSeraph/mlem#f2377051724532205e29e1c327d53e5b1008b1d1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "byteorder 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 0.9.13 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -84,7 +84,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
 "checksum byteorder 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "c40977b0ee6b9885c9013cd41d9feffdd22deb3bb4dc3a71d901cc7a77de18c8"
-"checksum mlem 0.1.0 (git+https://github.com/SilverWingedSeraph/mlem)" = "<none>"
+"checksum mlem 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2a173d14d03df97f03390a0ef3299522c6ae67396500f7ab07ecbd367c094c97"
 "checksum quote 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)" = "7a6e920b65c65f10b2ae65c831a81a073a89edd28c7cce89475bff467ab4167a"
 "checksum serde 0.9.13 (registry+https://github.com/rust-lang/crates.io-index)" = "231dfd55909400769e437326cfb4af8bec97c3dd56ab3d02df8ef5c7e00f179b"
 "checksum serde_cbor 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)" = "970990c7302c505495f76e26f414d87113ad304babdec390b0631c947d0e9744"
