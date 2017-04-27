@@ -1,5 +1,5 @@
 use super::{parse_line, parse_program};
-use super::{Instruction, Address, Register};
+use mlem::{Instruction, Address, Register};
 #[test]
 fn test() {
     assert!(parse_line("").unwrap() == None);
