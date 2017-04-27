@@ -80,8 +80,10 @@ mod test_lex {
         let result = lex_line("ident1 ident2 \n ident3");
         assert_eq!(&result[..], ["ident1", "ident2"]);
     }
+
+    #[test]
     fn test_lex_multiple_lines() {
         let result = lex("l1i1 l1i2 ; line 1 comment\nl2i1 l2i2 l2i3 ; line 2 comment");
-        assert_eq!(&result[..], &[vec!["l1i1", "l1i2"], vec!["l2i1", "l2i1", "l2i3"]]);
+        assert_eq!(&result[..], &[vec!["l1i1", "l1i2"], vec!["l2i1", "l2i2", "l2i3"]]);
     }
 }
