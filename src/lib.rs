@@ -24,6 +24,9 @@ pub use mlem::{Address, Instruction, Register, Program};
 #[cfg(test)]
 mod test;
 
+mod parse;
+mod lex;
+
 enum InstructionName {
     NoOp,
     Zero,
@@ -140,15 +143,9 @@ fn parse_address(name: &str) -> Result<Address, String> {
 /// assert!(parse_line("") == Ok(None));
 /// ```
 pub fn parse_line(line: &str) -> Result<Option<Instruction>, String> {
-    // Split off comments portion
-    let semantic_portion;
-    match line.split(';').next() {
-        Some(v) => { semantic_portion = v; },
-        None => { return Ok(None); }
-    };
-    
     // Split into "words"
-    let pieces: Vec<_> = semantic_portion.split_whitespace().collect();
+    let pieces: Vec<_> = lex::lex_line(line);
+    println!("{:?}", pieces);
 
     // If there are no words, this line is useless.
     if pieces.len() == 0 { return Ok(None); }
