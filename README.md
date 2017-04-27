@@ -1,7 +1,7 @@
 # mlem-asm
 
-[![Crates.io version badge](https://img.shields.io/crates/v/mlem-asm.svg)](https://crates.io/crates/mlem)
-[![Docs.rs version badge](https://docs.rs/mlem-asm/badge.svg)](https://docs.rs/mlem/)
+[![Crates.io version badge](https://img.shields.io/crates/v/mlem-asm.svg)](https://crates.io/crates/mlem-asm)
+[![Docs.rs version badge](https://docs.rs/mlem-asm/badge.svg)](https://docs.rs/mlem-asm/)
 
 This crate provides an assembler for the [MLeM](https://github.com/SilverWingedSeraph/mlem) virtual machine.
 It assembles codes like this:
