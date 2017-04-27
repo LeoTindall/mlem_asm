@@ -5,13 +5,38 @@
 //! # Assembly Language
 //! mlem-asm assembles the mlasm language into CBOR-encoded data that can be read and executed by MLeM.
 //! The mlasm language looks like so:
-//! ```asm
+//!
+//! ```lmasm,ignore
 //! ; Anything following a semicolon is a comment.
 //! ; Lines can be terminated with a semicolon, or not. The following two lines are equivalent:
 //! noop
 //! noop;
 //! ; Instructions that require arguments look like so:
 //! move R:R0 R:R1 ; Set R1 equal to R0
+//! ```
+//! 
+//! # Examples
+//! Here is an example of parsing a program and converting it into CBOR.
+//!
+//! ```
+//! use mlem_asm::*;
+//! use std::io::Cursor;
+//! let valid_program = "
+//!    noop
+//!    move R:R0 R:SP;
+//!    input R:R0;
+//!    ; comment only
+//!
+//!    ";
+//!
+//!    let mut buffer = Cursor::new(Vec::<u8>::new());
+//!
+//!    let program = parse_program(valid_program).unwrap();
+//!    program_to_writer(&program, &mut buffer).unwrap();
+//!    assert_eq!(buffer.get_ref(), 
+//!               &[217, 217, 247, 131, 0, 131, 2, 130, 
+//!                 0, 0, 130, 0, 8, 130, 4, 130, 0, 0])
+//!   
 //! ```
 
 extern crate serde_cbor;
@@ -22,8 +47,9 @@ pub use mlem::{Address, Instruction, Register, Program};
 #[cfg(test)]
 mod test;
 
-mod parse;
-mod lex;
+pub mod parse;
+pub use parse::{parse_program};
+pub mod lex;
 
 use std::io::Write;
 /// Writes an assembled program to a writer in packed, self-describing CBOR (a format MLeM can natively consume.)

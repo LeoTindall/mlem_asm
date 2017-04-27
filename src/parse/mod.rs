@@ -15,8 +15,10 @@ mod test;
 /// the line was legal but meant nothing (like `; comment only`).
 /// # Examples
 /// Simple single-line parsing:
+///
 /// ```
-/// use mlem_asm::{parse_line, Instruction};
+/// use mlem_asm::Instruction;
+/// use mlem_asm::parse::parse_line;
 /// assert!(parse_line("noop") == parse_line("noop;"));
 /// assert!(parse_line("noop") == Ok(Some(Instruction::NoOp)));
 /// assert!(parse_line("") == Ok(None));
@@ -24,7 +26,6 @@ mod test;
 pub fn parse_line(line: &str) -> Result<Option<Instruction>, String> {
     // Split into "words"
     let pieces: Vec<_> = lex::lex_line(line);
-    println!("{:?}", pieces);
 
     // If there are no words, this line is useless.
     if pieces.len() == 0 { return Ok(None); }
@@ -122,6 +123,7 @@ fn initial_parse_program(program: &str) -> Vec<Result<Option<Instruction>, Strin
 /// a Vec of error messages, with line numbers, of all errors in the program.
 /// # Example
 /// A valid program:
+///
 /// ```
 /// use mlem_asm::*;
 /// let valid_program = "
@@ -141,6 +143,7 @@ fn initial_parse_program(program: &str) -> Vec<Result<Option<Instruction>, Strin
 /// ```
 ///
 /// An invalid program:
+///
 /// ```
 /// use mlem_asm::*;
 /// let invalid_program = "
