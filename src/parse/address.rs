@@ -18,71 +18,49 @@ pub fn parse_register_name(item: &str) -> Result<Register, String> {
     }
  }
 
-// Parse an address of the form "specifier:item" where specifier is one of "R", "L", "M", or "P"
-// and item is an appropriate specifier.
+// Parse an address; register names, literals, or pointers to either of those two (with * prefix).
 // Literals can be decimal, hexidecimal (with 0x___), or binary (with 0b___).
-pub fn parse_address(name: &str) -> Result<Address, String> {
-    let pieces: Vec<_> = name.split(':').collect();
-    if pieces.len() != 2 { return Err("Malformed address.".into()); }
-    use std::borrow::Borrow;
-    let specifier = pieces[0];
-    let item = pieces[1];
-    match specifier.to_lowercase().borrow() {
-        "r" => {
-            match parse_register_name(item) {
-                Ok(r) => Ok(Address::RegAbs(r)),
-                Err(e) => Err(e)
-            }
-        },
-        "l" => { 
-            match parse_literal(item) {
-                Ok(l) => Ok(Address::Literal(l)),
-                Err(e) => Err(e)
-            }
-        },
-        "m" => { 
-            match parse_literal(item) {
-                Ok(l) => Ok(Address::MemAbs(l)),
-                Err(e) => Err(e)
-            } 
-        },
-        "p" => { 
-            match parse_register_name(item) {
-                Ok(r) => Ok(Address::MemReg(r)),
-                Err(e) => Err(e)
-            }
+pub fn parse_address(item: &str) -> Result<Address, String> {
+    
+    if item.chars().next().unwrap() == '*' {  // Try pointers first; if it has a * it's a pointer
+        if let Ok(r) = parse_register_name(&item[1..]) {
+            return Ok(Address::MemReg(r));
         }
-        other => Err(format!("Unknown address type specifier: {}", other))
+        if let Ok(l) = parse_literal(&item[1..]) {
+            return Ok(Address::MemAbs(l));
+        }
+    } else { // No * means it's a literal
+        if let Ok(r) = parse_register_name(&item) {
+            return Ok(Address::RegAbs(r));
+        }
+        if let Ok(l) = parse_literal(&item) {
+            return Ok(Address::Literal(l));
+        }
 
     }
+    Err(format!("Unknown address type: \"{}\" is not a register name, literal, or *pointer", &item))
 }
 
 fn parse_literal(item: &str) -> Result<u64, String> {
     // Check if there is a radix specifier
-    let non_decimal_radix: Option<u32>;
+    let radix: u32;
+    let sanitized_item: &str;
     if item.len() < 2 {
-        non_decimal_radix = None;
+        radix = 10;
+        sanitized_item = item;
     } else {
-        non_decimal_radix = match &item[0..2] {
-            "0x" => Some(16),
-            "0b" => Some(2),
-            _ => None,
+        let r: (u32, &str) = match &item[0..2] {
+            "0x" => (16, &item[2..]),
+            "0b" => (2, &item[2..]),
+            _ => (10, &item),
         };
+        radix = r.0;
+        sanitized_item = r.1;
     }
 
     //Parse the literal value
-    match non_decimal_radix {
-        Some(radix) => {
-            match u64::from_str_radix(&item[2..item.len()], radix) {
-                Ok(v) => Ok(v),
-                Err(e) => Err(format!("Could not parse literal of base : {}", e))
-            }
-        }
-        None => {
-            match u64::from_str_radix(item, 10) {
-                Ok(v) => Ok(v),
-                Err(e) => Err(format!("Could not parse literal: {}", e))
-            }
-        }
+    match u64::from_str_radix(sanitized_item, radix) {
+        Ok(v) => Ok(v),
+        Err(e) => Err(format!("Could not parse literal of base {} : {}", radix, e))
     }
  }

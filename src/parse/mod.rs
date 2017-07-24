@@ -10,8 +10,8 @@ mod test;
 /// Parse a line of the form `instruction [operand1] [operand2] [operand3][;[comment text]]`
 ///
 /// The return value is a `Result<Option<Instruction>, String>`. An `Ok(Some(_))` value means a valid
-/// instruction (for instance, the line `move R:R0 R:R1`). An `Err(_)` value means that there is
-/// unparsable about the line (like `move R:R0 R:r1 garbage garbage`); an `Ok(None)` value means that
+/// instruction (for instance, the line `move R0 R1`). An `Err(_)` value means that there is
+/// unparsable about the line (like `move R0 r1 garbage garbage`); an `Ok(None)` value means that
 /// the line was legal but meant nothing (like `; comment only`).
 /// # Examples
 /// Simple single-line parsing:
@@ -128,8 +128,8 @@ fn initial_parse_program(program: &str) -> Vec<Result<Option<Instruction>, Strin
 /// use mlem_asm::*;
 /// let valid_program = "
 ///    noop
-///    move R:R0 R:SP;
-///    input R:R0;
+///    move R0 SP;
+///    input R0;
 ///    ; comment only
 ///
 ///    ";
@@ -148,12 +148,12 @@ fn initial_parse_program(program: &str) -> Vec<Result<Option<Instruction>, Strin
 /// use mlem_asm::*;
 /// let invalid_program = "
 ///    noop
-///    move R:R0 R:xx;
+///    move R0 xx;
 ///    output invalid;
 ///    ; comment only
 ///
 ///    ";
-///    let expected_errors = Err(vec![(2, "Unknown register name: xx".into()), (3, "Malformed address.".into())]);
+///    let expected_errors = Err(vec![(2, "Unknown address type: \"xx\" is not a register name, literal, or *pointer".into()), (3, "Unknown address type: \"invalid\" is not a register name, literal, or *pointer".into())]);
 ///    let errors = parse_program(invalid_program);
 ///    assert!(errors == expected_errors, "Program resulted in: {:?} not: {:?}", errors, expected_errors);
 /// ```

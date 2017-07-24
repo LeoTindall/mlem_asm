@@ -12,7 +12,7 @@
 //! noop
 //! noop;
 //! ; Instructions that require arguments look like so:
-//! move R:R0 R:R1 ; Set R1 equal to R0
+//! move r0 r1 ; Set R1 equal to R0
 //! ```
 //! 
 //! # Examples
@@ -23,8 +23,8 @@
 //! use std::io::Cursor;
 //! let valid_program = "
 //!    noop
-//!    move R:R0 R:SP;
-//!    input R:R0;
+//!    move R0 SP;
+//!    input R0;
 //!    ; comment only
 //!
 //!    ";
