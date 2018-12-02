@@ -128,8 +128,8 @@ fn initial_parse_program(program: &str) -> Vec<Result<Option<Instruction>, Strin
 /// use mlem_asm::*;
 /// let valid_program = "
 ///    noop
-///    move R:R0 R:SP;
-///    input R:R0;
+///    move r0 rsp;
+///    input r0;
 ///    ; comment only
 ///
 ///    ";
@@ -148,12 +148,12 @@ fn initial_parse_program(program: &str) -> Vec<Result<Option<Instruction>, Strin
 /// use mlem_asm::*;
 /// let invalid_program = "
 ///    noop
-///    move R:R0 R:xx;
+///    move r0 rx;
 ///    output invalid;
 ///    ; comment only
 ///
 ///    ";
-///    let expected_errors = Err(vec![(2, "Unknown register name: xx".into()), (3, "Malformed address.".into())]);
+///    let expected_errors = Err(vec![(2, "Unknown register name: rx".into()), (3, "Unknown address type specifier: i (expected r, *, or digit).".into())]);
 ///    let errors = parse_program(invalid_program);
 ///    assert!(errors == expected_errors, "Program resulted in: {:?} not: {:?}", errors, expected_errors);
 /// ```

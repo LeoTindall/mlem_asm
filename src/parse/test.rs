@@ -9,21 +9,25 @@ fn test() {
 
 #[test]
 fn test_single_argument() {
-    assert!(parse_line("iput R:R0").unwrap() == Some(Instruction::Input(Address::RegAbs(Register::R0))));
-    parse_line("oput R:R0 R:R1").unwrap_err();
+    assert!(parse_line("iput R0").unwrap() == Some(Instruction::Input(Address::RegAbs(Register::R0))));
+    parse_line("oput R0 R1").unwrap_err();
 }
 
 #[test]
 fn test_radix_literals() {
-    assert_eq!(parse_line("move L:0xff L:0b11111111").unwrap(), Some(Instruction::Move(Address::Literal(255), Address::Literal(255))));
+    assert_eq!(parse_line("move 0xff 0b11111111").unwrap(), Some(Instruction::Move(Address::Literal(255), Address::Literal(255))));
+}
+
+fn test_memory_absolute() {
+    assert_eq!(parse_line("move *0xff R0").unwrap(), Some(Instruction::Move(Address::MemAbs(255), Address::RegAbs(Register::R0))));
 }
 
 #[test]
 fn test_double_argument() {
-    assert!(parse_line("move R:R0 R:R1").unwrap() == Some(Instruction::Move(
+    assert!(parse_line("move R0 R1").unwrap() == Some(Instruction::Move(
         Address::RegAbs(Register::R0),
         Address::RegAbs(Register::R1),
-        )), "It was {:?}", parse_line("move R:R0 R:R1"));
+        )), "It was {:?}", parse_line("move R0 R1"));
 }
 
 #[test]
@@ -31,9 +35,9 @@ fn test_parse_invalid_program() {
     let invalid_program = "
     ; comment only
     noop;
-    move R:R0 R:R1;
-    move R:Rx R:R1;
-    move R:R0 L:1024p;
+    move R0 R1;
+    move Rx R1;
+    move R0 1024p;
     ";
     let expected_errors = Err(vec![
             (4, "Unknown register name: rx".into()),
@@ -47,8 +51,8 @@ fn test_parse_invalid_program() {
 fn test_parse_valid_program() {
     let valid_program = "
     noop
-    move R:R0 R:SP;
-    input R:R0;
+    move R0 RSP;
+    input R0;
     ; comment only
 
     ";

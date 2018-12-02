@@ -1,8 +1,10 @@
 #![allow(dead_code)]
 use mlem::{Register, Address};
+use std::borrow::Borrow;
 
+/// Parse a register name into a Register or a reason why it could not.
+/// All register names begin with an R (case insensitive).
 pub fn parse_register_name(item: &str) -> Result<Register, String> { 
-    use std::borrow::Borrow;
     match item.to_lowercase().borrow() {
         "r0" => Ok(Register::R0),
         "r1" => Ok(Register::R1),
@@ -12,8 +14,8 @@ pub fn parse_register_name(item: &str) -> Result<Register, String> {
         "r5" => Ok(Register::R5),
         "r6" => Ok(Register::R6),
         "r7" => Ok(Register::R7),
-        "sp" => Ok(Register::SP),
-        "bp" => Ok(Register::BP),
+        "rsp" => Ok(Register::SP),
+        "rbp" => Ok(Register::BP),
         other => Err(format!("Unknown register name: {}", other))
     }
  }
@@ -22,38 +24,36 @@ pub fn parse_register_name(item: &str) -> Result<Register, String> {
 // and item is an appropriate specifier.
 // Literals can be decimal, hexidecimal (with 0x___), or binary (with 0b___).
 pub fn parse_address(name: &str) -> Result<Address, String> {
-    let pieces: Vec<_> = name.split(':').collect();
-    if pieces.len() != 2 { return Err("Malformed address.".into()); }
-    use std::borrow::Borrow;
-    let specifier = pieces[0];
-    let item = pieces[1];
-    match specifier.to_lowercase().borrow() {
-        "r" => {
-            match parse_register_name(item) {
-                Ok(r) => Ok(Address::RegAbs(r)),
-                Err(e) => Err(e)
-            }
-        },
-        "l" => { 
-            match parse_literal(item) {
-                Ok(l) => Ok(Address::Literal(l)),
-                Err(e) => Err(e)
-            }
-        },
-        "m" => { 
-            match parse_literal(item) {
-                Ok(l) => Ok(Address::MemAbs(l)),
-                Err(e) => Err(e)
-            } 
-        },
-        "p" => { 
-            match parse_register_name(item) {
-                Ok(r) => Ok(Address::MemReg(r)),
-                Err(e) => Err(e)
+    let first_character: char = match name.to_lowercase().chars().next() {
+        Some(v) => v,
+        None => return Err("Cannot parse empty address.".into())
+    };
+
+    if first_character == 'r' {
+        match parse_register_name(&name) {
+            Ok(r) => Ok(Address::RegAbs(r)),
+            Err(e) => Err(e)
+        }
+    } else if first_character.is_digit(10) {
+        // Either this starts with a radix specifier (a 0 and a letter) or a number.
+        match parse_literal(&name) {
+            Ok(l) => Ok(Address::Literal(l)),
+            Err(e) => Err(e)
+        }
+    } else if first_character == '*' {
+        match parse_literal(&name[1..]) {
+            Ok(l) => Ok(Address::MemAbs(l)),
+            Err(literal_parse_error) => { 
+                match parse_register_name(&name[1..]) {
+                    Ok(r) => Ok(Address::MemReg(r)),
+                    Err(register_parse_error) => Err(
+                        format!("Expected a register or memory address, failed to parse either. {}, {}", literal_parse_error, register_parse_error) 
+                    )
+                }
             }
         }
-        other => Err(format!("Unknown address type specifier: {}", other))
-
+    } else {
+        Err(format!("Unknown address type specifier: {} (expected r, *, or digit).", first_character))
     }
 }
 

@@ -5,8 +5,8 @@ fn test_program_to_writer() {
     use std::io::Cursor;
     let valid_program = "
     noop
-    move R:R0 R:SP;
-    input R:R0;
+    move R0 RSP;
+    input R0;
     ; comment only
 
     ";

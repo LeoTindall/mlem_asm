@@ -15,3 +15,4 @@ license = "MIT"
 [dependencies]
 mlem = "^0.1"
 serde_cbor = "^0.5"
+

@@ -6,13 +6,15 @@
 //! mlem-asm assembles the mlasm language into CBOR-encoded data that can be read and executed by MLeM.
 //! The mlasm language looks like so:
 //!
-//! ```lmasm,ignore
+//! ```mlasm,ignore
 //! ; Anything following a semicolon is a comment.
 //! ; Lines can be terminated with a semicolon, or not. The following two lines are equivalent:
 //! noop
 //! noop;
 //! ; Instructions that require arguments look like so:
-//! move R:R0 R:R1 ; Set R1 equal to R0
+//! move r0 r1 ; Set R1 equal to R0
+//! input *r0 ; read input into memory pointed at by r0
+//! output *0b01101 ; write output from memory pointed at by 0b01101
 //! ```
 //! 
 //! # Examples
@@ -23,8 +25,8 @@
 //! use std::io::Cursor;
 //! let valid_program = "
 //!    noop
-//!    move R:R0 R:SP;
-//!    input R:R0;
+//!    move r0 rsp; this is a comment
+//!    input r0; input into r0
 //!    ; comment only
 //!
 //!    ";
