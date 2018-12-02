@@ -3,7 +3,7 @@
 [![Crates.io version badge](https://img.shields.io/crates/v/mlem-asm.svg)](https://crates.io/crates/mlem-asm)
 [![Docs.rs version badge](https://docs.rs/mlem-asm/badge.svg)](https://docs.rs/mlem-asm/)
 
-This crate provides an assembler for the [MLeM](https://github.com/SilverWingedSeraph/mlem) virtual machine.
+This crate provides an assembler for the [MLeM](https://github.com/leotindall/mlem) virtual machine.
 It assembles codes like this:
 
 ```
@@ -18,12 +18,11 @@ jnz 2 R7        ; 5 Loop if the counter is not 0
 halt            ; 6 Allow the program to complete successfully
 ```
 
-This is, in fact, the contents of `test.asm`. The provided front-end in the examples directory can be used to 
+This is, in fact, the contents of `test.asm`. The provided front-end can be used to
 assemble and run this program, thus:
 
 ```
-14:38:41: leo [~/Projects/mlem-asm]
-$ cargo run --example mlem-asm r ~/Projects/mlem-asm/test.asm
+$ cargo run r test.asm
     Finished dev [unoptimized + debuginfo] target(s) in 0.0 secs
      Running `target/debug/examples/mlem-asm r /home/leo/Projects/mlem-asm/test.asm`
  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
